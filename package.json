@@ -1,0 +1,28 @@
+{
+  "name": "example-pup-sub",
+  "version": "1.0.0",
+  "description": "example-pup-sub",
+  "main": "app.ts",
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --build",
+    "start:dev": "nodemon"
+  },
+  "dependencies": {
+    "@types/ioredis": "^4.26.5",
+    "@types/kafkajs": "^1.9.0",
+    "@types/mysql": "^2.15.19",
+    "@types/node": "^14.14.31",
+    "@types/zeromq": "^5.2.0",
+    "ioredis": "^4.27.6",
+    "kafkajs": "^1.15.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3",
+    "zeromq": "5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
