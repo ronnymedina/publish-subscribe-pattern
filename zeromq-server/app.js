@@ -11,4 +11,4 @@ const sendMessage = () => {
   })
 }
   
-setInterval(sendMessage, 8000)
+setInterval(sendMessage, 5000)

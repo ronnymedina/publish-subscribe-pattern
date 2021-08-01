@@ -1,6 +1,6 @@
 import Redis from 'ioredis'
 
-import { RedisConnectionOptions, BaseProvider, MessageFromEvent } from './interfaces'
+import { RedisConnectionOptions, BaseProvider, MessageFromEvent } from '../interfaces'
 
 export class RedisProvider implements BaseProvider {
   topics: string[]
@@ -23,12 +23,12 @@ export class RedisProvider implements BaseProvider {
 
   async readMessagesFromTopics(callback: (data: MessageFromEvent) => void): Promise<void> {
     this.provider.on('message', async (topic: string, message: string) => {
-      const data = JSON.stringify(message) as unknown as Record<string, unknown>
+      const data = JSON.parse(message) as unknown as Record<string, unknown>
       callback({ data: data, provider: this.providerName, topic })
     })
   }
 
   async testPublisher(topic: string, message: string): Promise<void> {
-    this.provider.publish(topic, message)
+    this.provider.publish(topic, JSON.stringify({ message }))
   }
 }

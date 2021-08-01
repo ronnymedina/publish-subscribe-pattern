@@ -1,6 +1,6 @@
 import * as zmq from 'zeromq'
 
-import { ZeromqConnectionOptions, BaseProvider, MessageFromEvent } from './interfaces'
+import { ZeromqConnectionOptions, BaseProvider, MessageFromEvent } from '../interfaces'
 
 export class ZeromqProvider implements BaseProvider {
   readonly providerName = 'zeromq'

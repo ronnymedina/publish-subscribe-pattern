@@ -1,19 +1,34 @@
-import { KafkaProvider } from './kafka.provider'
-import { ZeromqProvider } from './zeromq.provider'
-import { RedisProvider } from './redis.provider'
+import * as events from 'events'
+
+import { dispatcher } from './dispatcher'
+
+import { KafkaProvider, ZeromqProvider, RedisProvider} from './providers'
 
 import { REDIS_OPTS, KAFKA_OPTS, ZEROMQ_OPTS } from './config'
 
+import { MessageFromEvent } from './interfaces'
 
-const kafka = new KafkaProvider(KAFKA_OPTS)
+const eventName = 'main'
 const topics = ['test']
+const event = new events.EventEmitter()
+const provider = [
+  new RedisProvider(REDIS_OPTS),
+  new KafkaProvider(KAFKA_OPTS),
+  new ZeromqProvider(ZEROMQ_OPTS),
+]
+
+event.on(eventName, dispatcher);
+const sendMessageToFromEvent = (message: MessageFromEvent) => {
+  event.emit(eventName, message)
+}
 
 const main = async () => {
-    // await zeromq.subscribe(topics)
-    // await zeromq.readMessagesFromTopics((data: any) => { console.log(data) })
-
-    await kafka.subscribe(topics)
-    await kafka.readMessagesFromTopics((data: any) => { console.log(data) })
+  await Promise.all(
+    provider.map(async (p) => {
+      await p.subscribe(topics)
+      await p.readMessagesFromTopics(sendMessageToFromEvent)
+    })
+  )
 }
 
 main()

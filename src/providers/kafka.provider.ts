@@ -1,6 +1,6 @@
 import { Admin, Consumer, EachMessagePayload, Kafka, Producer } from 'kafkajs'
 
-import { KafkaConnectionOptions, BaseProvider, MessageFromEvent } from './interfaces'
+import { KafkaConnectionOptions, BaseProvider, MessageFromEvent } from '../interfaces'
 
 export class KafkaProvider implements BaseProvider {
   providerName = 'kafka'
@@ -31,7 +31,7 @@ export class KafkaProvider implements BaseProvider {
   async readMessagesFromTopics(callback: (data: MessageFromEvent) => void) {
     await this.consumer.run({
       eachMessage: async ({ topic, message }: EachMessagePayload) => {
-        const data = JSON.stringify(message.value) as unknown as Record<string, unknown>
+        const data = JSON.parse(message.value.toString()) as unknown as Record<string, unknown>
         callback({ data, provider: this.providerName, topic })
       },
     })
@@ -49,7 +49,7 @@ export class KafkaProvider implements BaseProvider {
       await this.producer.connect()
       await this.producer.send({
         topic: topic,
-        messages: [{ value: message }]
+        messages: [{ value: JSON.stringify({ message }) }]
       })
 
     } catch (err) {

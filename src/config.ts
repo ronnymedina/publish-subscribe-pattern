@@ -5,7 +5,7 @@ export const KAFKA_OPTS = {
   }
   
   export const REDIS_OPTS = {
-    host: 'string',
+    host: 'redis',
     port: 6379,
     db: 0,
   }
