@@ -3,8 +3,7 @@ import { Admin, Consumer, EachMessagePayload, Kafka, Producer } from 'kafkajs'
 import { KafkaConnectionOptions, BaseProvider, MessageFromEvent } from '../interfaces'
 
 export class KafkaProvider implements BaseProvider {
-  providerName = 'kafka'
-  topics: string[]
+  readonly providerName = 'kafka'
 
   private provider: Kafka
   private consumer: Consumer
@@ -20,6 +19,8 @@ export class KafkaProvider implements BaseProvider {
     this.consumer = this.provider.consumer({ groupId: opts.groupId })
     this.producer = this.provider.producer()
     this.admin = this.provider.admin()
+
+    this.createTopic().then()
   }
 
   async subscribe(topics: string[]): Promise<void> {
@@ -37,14 +38,16 @@ export class KafkaProvider implements BaseProvider {
     })
   }
 
-  async testPublisher(topic: string, message: string): Promise<void> {
+  async createTopic() {
     try {
       await this.admin.connect()
-      await this.admin.createTopics({ waitForLeaders: true, topics: [{ topic }] })
+      await this.admin.createTopics({ waitForLeaders: true, topics: [{ topic: 'test' }] })
     } catch (err) {
       console.log(err)
     }
+  }
 
+  async testPublisher(topic: string, message: string): Promise<void> {
     try {
       await this.producer.connect()
       await this.producer.send({

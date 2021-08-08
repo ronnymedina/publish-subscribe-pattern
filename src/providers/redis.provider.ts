@@ -3,7 +3,6 @@ import Redis from 'ioredis'
 import { RedisConnectionOptions, BaseProvider, MessageFromEvent } from '../interfaces'
 
 export class RedisProvider implements BaseProvider {
-  topics: string[]
   readonly providerName = 'redis'
   private provider: Redis.Redis
 
@@ -24,7 +23,7 @@ export class RedisProvider implements BaseProvider {
   async readMessagesFromTopics(callback: (data: MessageFromEvent) => void): Promise<void> {
     this.provider.on('message', async (topic: string, message: string) => {
       const data = JSON.parse(message) as unknown as Record<string, unknown>
-      callback({ data: data, provider: this.providerName, topic })
+      callback({ data, provider: this.providerName, topic })
     })
   }
 

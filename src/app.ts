@@ -22,6 +22,8 @@ const sendMessageToFromEvent = (message: MessageFromEvent) => {
   event.emit(eventName, message)
 }
 
+
+
 const main = async () => {
   await Promise.all(
     provider.map(async (p) => {
@@ -32,3 +34,5 @@ const main = async () => {
 }
 
 main()
+
+

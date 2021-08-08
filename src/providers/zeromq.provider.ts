@@ -4,15 +4,11 @@ import { ZeromqConnectionOptions, BaseProvider, MessageFromEvent } from '../inte
 
 export class ZeromqProvider implements BaseProvider {
   readonly providerName = 'zeromq'
-  topics: string[]
-
   private provider: zmq.Socket
-  private urlConnection: string
 
   constructor(opts: ZeromqConnectionOptions) {
-    this.urlConnection = `${opts.host}:${opts.port}`
     this.provider = zmq.socket('sub')
-    this.provider.connect(this.urlConnection)
+    this.provider.connect(`${opts.host}:${opts.port}`)
   }
 
   async subscribe(topics: string[]): Promise<void> {

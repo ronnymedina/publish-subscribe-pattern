@@ -1,3 +1,4 @@
+
 import { MessageFromEvent } from './interfaces';
 
 export const dispatcher = (message: MessageFromEvent) => {

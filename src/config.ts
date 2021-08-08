@@ -1,7 +1,7 @@
 export const KAFKA_OPTS = {
     clientId: 'exmaple-app',
     brokers: ['broker:29092'],
-    groupId: 'consumer-app',
+    groupId: 'example',
   }
   
   export const REDIS_OPTS = {
